@@ -30,7 +30,8 @@ Reviewed against the UI/UX Pro Max checklist (product profile: Micro SaaS — fl
 
 - Five icon concepts live in `design/icons/` (1 chain, 2 eight-point star, 3 mihrab arch, 4 nodes, 5 QR). The chain (1) is in use: it stays legible at 16px.
 - In use: `src/app/icon.svg` (tab), `src/app/apple-icon.png` (180, full-bleed), `public/brand/icon-192.png`, `icon-512.png`, `maskable-512.png` (artwork inside the 80% safe zone), `public/brand/logo.svg` (header). The web app manifest is `src/app/manifest.ts`.
-- To switch to another concept, regenerate those files from its SVG at the same sizes (full-bleed for apple/maskable).
+- Regenerate the PNGs with `node design/icons/render-pngs.mjs` (needs Playwright). It inlines the SVG markup; loading it via `file://` renders blank icons that phones show as black. `test/icons.test.ts` fails if any icon is blank or the wrong size.
+- To switch to another concept, point the script at that SVG (plus full-bleed and maskable variants like `1-chain-full.svg` / `1-chain-maskable.svg`).
 
 ## Animated background
 
