@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Same palette as Darwish Quran: emerald + gold + ivory */
+  --background: #f8f5ee;
+  --foreground: #1b2a26;
+  --card: #ffffff;
+  --card-foreground: #1b2a26;
+  --muted: #eee9dd;
+  --muted-foreground: #5f6f69;
+  --primary: #0b5d46;
+  --primary-light: #12775b;
+  --primary-dark: #073d2e;
+  --primary-foreground: #f6f3ea;
+  --gold: #c19a3d;
+  --gold-light: #d9bc6e;
+  --border: #ddd5c3;
+  --danger: #b3362f;
+  --success: #1d7a4f;
+}
+
+.dark {
+  /* Dark emerald + gold */
+  --background: #011713;
+  --foreground: #cfe8e1;
+  --card: #0d231f;
+  --card-foreground: #cfe8e1;
+  --muted: #182e2a;
+  --muted-foreground: #9db3ad;
+  --primary: #1a9c76;
+  --primary-light: #53ddad;
+  --primary-dark: #062b22;
+  --primary-foreground: #f6f3ea;
+  --gold: #f2ca50;
+  --gold-light: #ffe088;
+  --border: #233934;
+  --danger: #ffb4ab;
+  --success: #53ddad;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-border: var(--border);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --font-sans: var(--font-cairo), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}

@@ -1,0 +1,175 @@
+{
+  "site": {
+    "name": "Darwish Links",
+    "description": "Shorten long links, get a QR code, and see who clicks.",
+    "footer": "Darwish Links — simple, safe link shortening",
+    "numberLocale": "en"
+  },
+  "nav": {
+    "dashboard": "My links",
+    "admin": "Admin",
+    "login": "Log in",
+    "logout": "Log out",
+    "theme": "Toggle dark mode"
+  },
+  "auth": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters.",
+    "login": {
+      "title": "Log in",
+      "subtitle": "Log in to manage your links and see their stats.",
+      "submit": "Log in",
+      "switchPrompt": "No account yet?"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Sign up for free and start shortening in seconds.",
+      "submit": "Create account",
+      "switchPrompt": "Already have an account?"
+    }
+  },
+  "errors": {
+    "INVALID_INPUT": "Please check your input: the URL must start with http or https, and a custom code must be 3–50 letters, digits or hyphens.",
+    "INVALID_CREDENTIALS": "Wrong email or password.",
+    "EMAIL_TAKEN": "This email is already registered. Try logging in.",
+    "ACCOUNT_BLOCKED": "This account has been suspended.",
+    "RATE_LIMITED": "Too many attempts. Please wait a bit and try again.",
+    "SERVER_ERROR": "Something went wrong. Please try again.",
+    "CODE_TAKEN": "That code is taken. Choose another one.",
+    "CODE_RESERVED": "That code is reserved by the site. Choose another one.",
+    "SELF_LINK": "You can't shorten a link from this site.",
+    "SHORTENER": "This is already a short link from another service. Use the original URL.",
+    "UNSAFE": "This URL is flagged as malware or phishing and can't be shortened.",
+    "NOT_FOUND": "Link not found."
+  },
+  "home": {
+    "title": "Short, clean links that tell you who clicked",
+    "subtitle": "Paste any long URL, get a short link to share on WhatsApp or print as a QR code, and track clicks day by day.",
+    "ctaRegister": "Start for free",
+    "ctaLogin": "I have an account",
+    "features": {
+      "short": {
+        "title": "Short or custom",
+        "body": "A random code, or pick an easy name like /ramadan."
+      },
+      "qr": {
+        "title": "QR ready",
+        "body": "Every link has a QR code you can download and print."
+      },
+      "stats": {
+        "title": "Analytics",
+        "body": "Clicks per day, where they came from, country and device."
+      },
+      "control": {
+        "title": "Full control",
+        "body": "Change the destination, pause the link, or set an expiry date."
+      }
+    }
+  },
+  "dashboard": {
+    "greeting": "Welcome, {name}",
+    "subtitle": "Shorten a new link or check on your links.",
+    "totalLinks": "Links",
+    "totalClicks": "Clicks"
+  },
+  "links": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "qrAlt": "QR code for {url}",
+    "downloadQr": "Download QR",
+    "url": "Destination URL",
+    "urlPlaceholder": "Paste a long link here…",
+    "shorten": "Shorten",
+    "moreOptions": "More options",
+    "customCode": "Custom code",
+    "customCodeHint": "Letters, digits and hyphens, 3–50. Empty = random code.",
+    "title": "Label",
+    "expires": "Expires on",
+    "ready": "Your link is ready",
+    "myLinks": "My links",
+    "search": "Search your links",
+    "empty": "No links yet. Paste your first one above.",
+    "noMatch": "No matches.",
+    "confirmDelete": "Delete /{code} and its stats permanently? Anyone opening it afterwards will see it's unavailable.",
+    "viewStats": "View stats",
+    "clicks": "clicks",
+    "clicksN": "{n} clicks",
+    "stats": "Stats",
+    "edit": "Edit",
+    "pause": "Pause",
+    "resume": "Resume",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "removeExpiry": "Remove expiry",
+    "codeFixed": "The code can't change, so links already shared or printed keep working.",
+    "createdOn": "Created {date}",
+    "expiresOn": "Expires {date}",
+    "state": {
+      "active": "Active",
+      "paused": "Paused",
+      "expired": "Expired",
+      "blocked": "Blocked"
+    },
+    "linksN": "{n} links"
+  },
+  "stats": {
+    "title": "Link stats",
+    "back": "← Back to my links",
+    "max": "Busiest day: {n}",
+    "clicksN": "{n} clicks",
+    "asTable": "Show as table",
+    "day": "Day",
+    "clicks": "Clicks",
+    "allTime": "All-time clicks",
+    "lastNDays": "Last {n} days",
+    "lastClick": "Last click",
+    "daily": "Daily clicks — last {n} days",
+    "referrers": "Referrers",
+    "countries": "Countries",
+    "devices": "Devices",
+    "browsers": "Browsers",
+    "os": "Operating systems",
+    "none": "No data yet.",
+    "direct": "Direct or app",
+    "unknown": "Unknown",
+    "device": {
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop"
+    },
+    "privacyNote": "IP addresses aren't stored. WhatsApp, Facebook and Telegram previews and crawlers aren't counted as clicks.",
+    "blockedReason": "Blocked by an admin: {reason}",
+    "userBlocked": "Blocked because the account is suspended."
+  },
+  "unavailable": {
+    "title": "Link unavailable",
+    "home": "Back to home",
+    "notFound": "This page doesn't exist.",
+    "reason": {
+      "missing": "This link doesn't exist. Check that it's typed correctly.",
+      "paused": "The owner has paused this link.",
+      "expired": "This link has expired.",
+      "blocked": "This link was disabled for breaking the terms of use."
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "users": "Users",
+    "links": "Links",
+    "clicks24h": "Clicks, last 24h",
+    "searchLinks": "Code, URL or email…",
+    "searchUsers": "Name or email…",
+    "nothing": "No results.",
+    "adminBadge": "Admin",
+    "blockedBadge": "Suspended",
+    "block": "Block",
+    "unblock": "Unblock",
+    "blockReasonPrompt": "Reason for blocking (optional):",
+    "failed": "That didn't work. Please try again.",
+    "confirmBlockUser": "Suspend {name}? They'll be signed out and all their links will stop working.",
+    "joined": "Joined {date}"
+  }
+}
