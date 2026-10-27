@@ -15,7 +15,12 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
-      <div className="mx-auto max-w-2xl text-center">
+      <div className="relative mx-auto max-w-2xl text-center">
+        {/* Calm zone: keeps the animated background from running behind the headline */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -inset-y-10 -z-[1] sm:-inset-x-10 bg-[radial-gradient(closest-side,var(--background)_70%,transparent)]"
+        />
         <h1 className="text-3xl font-extrabold leading-tight [text-wrap:balance] text-primary sm:text-5xl dark:text-primary-light">
           {t("title")}
         </h1>
@@ -39,7 +44,7 @@ export default async function HomePage() {
         {FEATURES.map((f) => {
           const Icon = ICONS[f];
           return (
-            <li key={f} className="rounded-2xl border border-border bg-card p-5">
+            <li key={f} className="rounded-2xl border border-border bg-card/80 p-5 backdrop-blur-sm">
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light">
                 <Icon size={22} aria-hidden />
               </span>

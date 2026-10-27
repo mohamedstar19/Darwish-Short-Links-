@@ -25,3 +25,17 @@ Reviewed against the UI/UX Pro Max checklist (product profile: Micro SaaS — fl
 - No horizontal scroll at 375px (portrait) or 812×375 (landscape). Grids that collapse to one column use `grid-cols-1` so native inputs (e.g. date) can't widen the page.
 - Charts: one hue, exact value on hover/focus, a table view, and an empty state instead of a blank chart.
 - Run an axe scan (WCAG 2.2 AA) on changed pages in both themes; the current pages report no violations.
+
+## Icons
+
+- Five icon concepts live in `design/icons/` (1 chain, 2 eight-point star, 3 mihrab arch, 4 nodes, 5 QR). The chain (1) is in use: it stays legible at 16px.
+- In use: `src/app/icon.svg` (tab), `src/app/apple-icon.png` (180, full-bleed), `public/brand/icon-192.png`, `icon-512.png`, `maskable-512.png` (artwork inside the 80% safe zone), `public/brand/logo.svg` (header). The web app manifest is `src/app/manifest.ts`.
+- To switch to another concept, regenerate those files from its SVG at the same sizes (full-bleed for apple/maskable).
+
+## Animated background
+
+`src/components/AnimatedBackground.tsx` draws a drifting "network of links" on a canvas behind `/`, `/login`, `/register`, and `/link-unavailable` only; data pages stay still.
+
+- Interaction: dots lean toward the pointer (clamped pull) with gold lines to it; a tap on empty space sends a ripple. Taps on controls are ignored.
+- Rules: a visible pause button (WCAG 2.2.2), remembered in `localStorage`; `prefers-reduced-motion` shows a still frame and no button; the loop stops while the tab is hidden; listeners and the frame loop are cleaned up on unmount; DPR capped at 2; 34–80 dots by screen area.
+- Legibility: lines are faint (30% light / 40% dark at most), the hero headline sits on a radial "calm zone", and cards stay opaque or 80% so text never sits directly on moving lines.

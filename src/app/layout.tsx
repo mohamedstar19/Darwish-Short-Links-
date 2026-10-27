@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import "./globals.css";
 
 const cairo = Cairo({ variable: "--font-cairo", subsets: ["arabic", "latin"] });
@@ -14,6 +15,13 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t("description"),
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f5ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#011713" },
+  ],
+};
 
 // Applies the saved theme before paint so dark mode doesn't flash
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
@@ -34,6 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           >
             {t("skipToContent")}
           </a>
+          <AnimatedBackground />
           <Header />
           <main id="main" tabIndex={-1} className="flex-1 outline-none">
             {children}

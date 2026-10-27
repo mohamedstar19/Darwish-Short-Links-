@@ -176,5 +176,9 @@
     "failed": "That didn't work. Please try again.",
     "confirmBlockUser": "Suspend {name}? They'll be signed out and all their links will stop working.",
     "joined": "Joined {date}"
+  },
+  "background": {
+    "pause": "Pause background animation",
+    "play": "Play background animation"
   }
 }

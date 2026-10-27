@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { Link2 } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/session";
 import { buttonClass } from "@/components/ui";
 import LocaleToggle from "./LocaleToggle";
@@ -28,9 +27,8 @@ export default async function Header() {
           aria-label={ts("name")}
           className="me-auto flex min-h-11 items-center gap-2 font-extrabold text-primary dark:text-primary-light"
         >
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <Link2 size={20} aria-hidden />
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG logo */}
+          <img src="/brand/logo.svg" alt="" width={36} height={36} className="h-9 w-9 rounded-[10px]" />
           <span className="hidden sm:inline">{ts("name")}</span>
         </Link>
         {nav.length > 0 && <NavLinks items={nav} />}
