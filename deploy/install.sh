@@ -18,7 +18,7 @@ APP_USER="links"
 APP_HOME="/opt/darwish-links"
 APP_DIR="$APP_HOME/app"
 ENV_FILE="$APP_DIR/.env"
-APP_PORT="${APP_PORT:-3020}"
+APP_PORT_REQUESTED="${APP_PORT:-}" # optional; otherwise the saved port, or the first free one from 3020
 DB_CONTAINER="darwish-links-db"
 DB_PORT="${DB_PORT:-5434}"
 PM2_NAME="darwish-links"
@@ -109,10 +109,33 @@ log "4/7 تثبيت الحزم والمايجريشن والبناء (دقايق
 sudo -u "$APP_USER" bash -lc "cd '$APP_DIR' && npm ci --no-audit --no-fund && npx prisma migrate deploy && npm run build"
 
 # ---------- 5) PM2 ----------
-log "5/7 تشغيل التطبيق عبر PM2 على المنفذ $APP_PORT"
-if ! sudo -u "$APP_USER" bash -lc "pm2 describe $PM2_NAME" >/dev/null 2>&1 && port_busy "$APP_PORT"; then
-  die "المنفذ $APP_PORT مستخدم من برنامج تاني — شغّل تاني بمنفذ تاني: sudo APP_PORT=3030 bash deploy/install.sh $DOMAIN"
+# المنفذ: اللي طلبته، أو المحفوظ في .env من تثبيت سابق، أو أول منفذ فاضي من 3020
+PM2_EXISTS=0
+sudo -u "$APP_USER" bash -lc "pm2 describe $PM2_NAME" >/dev/null 2>&1 && PM2_EXISTS=1
+SAVED_PORT="$(sed -n 's/^APP_PORT="\{0,1\}\([0-9]\{2,5\}\)"\{0,1\}$/\1/p' "$ENV_FILE")"
+if [[ -n "$APP_PORT_REQUESTED" ]]; then
+  APP_PORT="$APP_PORT_REQUESTED"
+  [[ "$APP_PORT" =~ ^[0-9]{2,5}$ ]] || die "المنفذ مش صحيح: $APP_PORT"
+  if { [[ $PM2_EXISTS -eq 0 ]] || [[ "$APP_PORT" != "$SAVED_PORT" ]]; } && port_busy "$APP_PORT"; then
+    die "المنفذ $APP_PORT مستخدم من برنامج تاني — جرّب من غير APP_PORT وهختار منفذ فاضي لوحدي"
+  fi
+elif [[ -n "$SAVED_PORT" ]]; then
+  APP_PORT="$SAVED_PORT"
+else
+  APP_PORT=3020
+  while port_busy "$APP_PORT"; do
+    APP_PORT=$((APP_PORT + 1))
+    (( APP_PORT < 3100 )) || die "مالقيتش منفذ فاضي بين 3020 و3099 — حدّد واحد: sudo APP_PORT=4020 bash deploy/install.sh $DOMAIN"
+  done
 fi
+# يتحفظ في .env عشان التحديثات الجاية تستخدم نفس المنفذ
+if grep -q '^APP_PORT=' "$ENV_FILE"; then
+  sed -i "s/^APP_PORT=.*/APP_PORT=\"$APP_PORT\"/" "$ENV_FILE"
+else
+  printf '\n# منفذ التطبيق (Nginx بيوجّه عليه)\nAPP_PORT="%s"\n' "$APP_PORT" >> "$ENV_FILE"
+fi
+
+log "5/7 تشغيل التطبيق عبر PM2 على المنفذ $APP_PORT"
 sudo -u "$APP_USER" bash -lc "cd '$APP_DIR' && (pm2 describe $PM2_NAME >/dev/null 2>&1 && PORT=$APP_PORT pm2 restart $PM2_NAME --update-env || PORT=$APP_PORT pm2 start npm --name $PM2_NAME -- start) && pm2 save" >/dev/null
 env PATH="$PATH:/usr/bin" pm2 startup systemd -u "$APP_USER" --hp "$APP_HOME" >/dev/null 2>&1 || true
 

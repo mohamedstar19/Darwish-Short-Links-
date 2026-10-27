@@ -30,7 +30,7 @@ npm run make-admin -- you@example.com
 
 ## Deploy on your own Linux server
 
-Same pattern as Darwish Quran: a dedicated `links` system user, PostgreSQL in its own Docker container (`127.0.0.1:5434`), PM2 on port `3020`, and a separate Nginx site file. Nothing else on the server is touched.
+Same pattern as Darwish Quran: a dedicated `links` system user, PostgreSQL in its own Docker container (`127.0.0.1:5434`), PM2 on the first free port from `3020` (saved as `APP_PORT` in `.env`), and a separate Nginx site file. Nothing else on the server is touched.
 
 ```bash
 # on the server (Ubuntu/Debian), once
@@ -45,7 +45,7 @@ sudo bash deploy/make-admin.sh you@example.com
 sudo bash deploy/update.sh
 ```
 
-`install.sh` generates `/opt/darwish-links/app/.env` (database password, `SESSION_SECRET`, `APP_URL`) on the first run and never overwrites it; keep a backup. Ports can be changed with `APP_PORT=… DB_PORT=…`.
+`install.sh` generates `/opt/darwish-links/app/.env` (database password, `SESSION_SECRET`, `APP_URL`) on the first run and never overwrites it; keep a backup. To force a port: `sudo APP_PORT=4020 bash deploy/install.sh <domain>`; the database port with `DB_PORT=…` on the first install.
 
 Then point the domain at the server: behind Cloudflare Tunnel, add a Public Hostname for it to `http://localhost:80` (like `quran.darwish-tech.com`); with plain DNS, add an A record and enable SSL in Cloudflare or with `certbot --nginx`.
 
