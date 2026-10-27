@@ -22,8 +22,10 @@ setInterval(() => {
   for (const [key, bucket] of buckets) if (bucket.resetAt <= now) buckets.delete(key);
 }, 60_000).unref?.();
 
+/** Visitor IP for rate limiting only (never stored). Behind Cloudflare the real one is CF-Connecting-IP. */
 export function clientIp(headers: Headers): string {
   return (
+    headers.get("cf-connecting-ip") ||
     headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     headers.get("x-real-ip") ||
     "unknown"

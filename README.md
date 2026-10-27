@@ -28,13 +28,25 @@ npm run make-admin -- you@example.com
 | `SESSION_SECRET` | yes | ≥ 32 random characters (`openssl rand -base64 48`) |
 | `SAFE_BROWSING_API_KEY` | no | Checks new links against Google Safe Browsing |
 
-## Deploy
+## Deploy on your own Linux server
 
-Works on any Node host. For Vercel + Neon/Supabase:
+Same pattern as Darwish Quran: a dedicated `links` system user, PostgreSQL in its own Docker container (`127.0.0.1:5434`), PM2 on port `3020`, and a separate Nginx site file. Nothing else on the server is touched.
 
-1. Create the Postgres database and copy its connection string.
-2. Import this repo in Vercel and set the variables above.
-3. Run `npm run db:deploy` once against the production database (and after every new migration).
-4. Point your short domain at the deployment and set `APP_URL` to it.
+```bash
+# on the server (Ubuntu/Debian), once
+git clone git@github.com:mohamedstar19/Darwish-Short-Links-.git
+cd Darwish-Short-Links-
+sudo bash deploy/install.sh links.darwish-tech.com   # your (sub)domain
+
+# after signing up on the site, make yourself admin
+sudo bash deploy/make-admin.sh you@example.com
+
+# later updates
+sudo bash deploy/update.sh
+```
+
+`install.sh` generates `/opt/darwish-links/app/.env` (database password, `SESSION_SECRET`, `APP_URL`) on the first run and never overwrites it; keep a backup. Ports can be changed with `APP_PORT=… DB_PORT=…`.
+
+Then point the domain at the server: behind Cloudflare Tunnel, add a Public Hostname for it to `http://localhost:80` (like `quran.darwish-tech.com`); with plain DNS, add an A record and enable SSL in Cloudflare or with `certbot --nginx`.
 
 See `doc/` for architecture and feature details.

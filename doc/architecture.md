@@ -29,4 +29,7 @@
 
 ## Deployment
 
-`npm run build` runs `prisma generate` then `next build`. Apply migrations with `npm run db:deploy`. Required env: `DATABASE_URL`, `APP_URL`, `SESSION_SECRET`.
+- Production runs on the owner's Linux server behind Cloudflare and Nginx, like Darwish Quran: `deploy/install.sh <domain>` (first install and every update via `deploy/update.sh`), `deploy/nginx.conf` (template), `deploy/make-admin.sh`.
+- Layout: user `links`, app in `/opt/darwish-links/app`, PostgreSQL container `darwish-links-db` on `127.0.0.1:5434` (volume `darwish_links_pg`), PM2 process `darwish-links` on port `3020`.
+- Cloudflare sends `CF-Connecting-IP` (used for rate limiting) and `CF-IPCountry` (click country); Nginx passes both through.
+- `npm run build` runs `prisma generate` then `next build`; `install.sh` runs `prisma migrate deploy` before it. Required env: `DATABASE_URL`, `APP_URL`, `SESSION_SECRET`.
