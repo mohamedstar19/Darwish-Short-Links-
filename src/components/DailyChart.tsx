@@ -54,10 +54,15 @@ export default function DailyChart({ daily }: { daily: { day: string; count: num
             className="group flex h-full min-w-0 flex-1 items-end focus-visible:outline-none"
           >
             <span
-              className={`block w-full rounded-t-[4px] transition-colors ${
+              className={`animate-grow-y block w-full rounded-t-[4px] transition-opacity ${
                 d.count ? "bg-primary dark:bg-primary-light" : ""
               } ${active === i ? "opacity-100" : active === null ? "opacity-90" : "opacity-50"} group-focus-visible:ring-2 group-focus-visible:ring-gold`}
-              style={{ height: d.count ? `${Math.max(3, (d.count / max) * 100)}%` : 0 }}
+              style={
+                {
+                  height: d.count ? `${Math.max(3, (d.count / max) * 100)}%` : 0,
+                  "--i": i,
+                } as React.CSSProperties
+              }
             />
           </button>
         ))}

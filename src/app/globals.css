@@ -16,6 +16,7 @@
   --primary-foreground: #f6f3ea;
   --gold: #c19a3d;
   --gold-light: #d9bc6e;
+  --sheen: #8a6a1c; /* darker gold: ≥4.5:1 on the background */
   --border: #ddd5c3; /* decorative card/divider lines */
   --input: #8c8573; /* form-field outlines: ≥3:1 on card and background */
   --danger: #b3362f;
@@ -36,6 +37,7 @@
   --primary-foreground: #f6f3ea;
   --gold: #f2ca50;
   --gold-light: #ffe088;
+  --sheen: #ffe088;
   --border: #233934;
   --input: #5b766f;
   --danger: #ffb4ab;
@@ -85,6 +87,69 @@ label[for] {
   touch-action: manipulation;
 }
 
+/* ---------- Motion ----------
+   Entrances use transform + opacity only (no layout shift). Durations follow the
+   UI/UX Pro Max motion table: 300–450ms entrances, 30–50ms stagger, 150ms feedback.
+   Stagger an element with style={{ "--i": index }}. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+.animate-rise {
+  animation: rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(min(var(--i, 0), 12) * 45ms);
+}
+.animate-pop {
+  animation: pop 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.animate-grow-y {
+  transform-origin: bottom;
+  animation: grow-y 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 18ms);
+}
+.animate-grow-x {
+  transform-origin: right;
+  animation: grow-x 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+[dir="ltr"] .animate-grow-x {
+  transform-origin: left;
+}
+/* One gold sweep across the headline on page load (runs once, so no pause control is needed) */
+.text-sheen {
+  background: linear-gradient(100deg, currentColor 15%, var(--sheen) 25%, currentColor 35%) 100% 0 / 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: sheen 1.6s ease-in-out 0.5s 1 both;
+}
+
 /* Respect "reduce motion": no spinners spinning, pulses, or smooth scrolling */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -94,6 +159,7 @@ label[for] {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

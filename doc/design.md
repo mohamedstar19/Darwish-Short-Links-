@@ -34,8 +34,18 @@ Reviewed against the UI/UX Pro Max checklist (product profile: Micro SaaS — fl
 
 ## Animated background
 
-`src/components/AnimatedBackground.tsx` draws a drifting "network of links" on a canvas behind `/`, `/login`, `/register`, and `/link-unavailable` only; data pages stay still.
+`src/components/AnimatedBackground.tsx` draws a drifting "network of links" on a canvas behind every page. Data pages (`/dashboard…`, `/admin`) get a calmer version (75% of the dots and line strength).
 
 - Interaction: dots lean toward the pointer (clamped pull) with gold lines to it; a tap on empty space sends a ripple. Taps on controls are ignored.
 - Rules: a visible pause button (WCAG 2.2.2), remembered in `localStorage`; `prefers-reduced-motion` shows a still frame and no button; the loop stops while the tab is hidden; listeners and the frame loop are cleaned up on unmount; DPR capped at 2; 34–80 dots by screen area.
-- Legibility: lines are faint (30% light / 40% dark at most), the hero headline sits on a radial "calm zone", and cards stay opaque or 80% so text never sits directly on moving lines.
+- Legibility: lines are faint (30% light / 40% dark at most), the hero headline sits on a radial "calm zone", and cards are 80–95% opaque so text never sits directly on moving lines.
+
+## Page motion (`src/app/globals.css`)
+
+- `animate-rise` (420ms, translate + fade) on page sections and list rows, staggered 45ms with `style={{ "--i": n }}` (capped at 12 steps).
+- `animate-pop` for things that appear in response to an action: the "link ready" card, the copy check mark, status icons.
+- `animate-grow-y` / `animate-grow-x` grow chart bars and breakdown bars from their baseline (RTL-aware origin).
+- `CountUp` counts stat numbers up from 0 (server renders the final value; skipped with reduced motion).
+- `.text-sheen`: one gold sweep across the home headline on load (runs once, darker gold in light mode for contrast).
+- Buttons scale to 0.97 on press; cards lift their border and shadow on hover; the header logo tilts on hover.
+- Only `transform` and `opacity` animate, so nothing shifts layout. Under `prefers-reduced-motion` every animation and delay drops to zero and content shows in its final state.

@@ -21,13 +21,18 @@ export default async function HomePage() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 -inset-y-10 -z-[1] sm:-inset-x-10 bg-[radial-gradient(closest-side,var(--background)_70%,transparent)]"
         />
-        <h1 className="text-3xl font-extrabold leading-tight [text-wrap:balance] text-primary sm:text-5xl dark:text-primary-light">
-          {t("title")}
+        <h1 className="animate-rise text-3xl font-extrabold leading-tight [text-wrap:balance] text-primary sm:text-5xl dark:text-primary-light">
+          <span className="text-sheen">{t("title")}</span>
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
+        <p
+          className="animate-rise mt-4 text-lg text-muted-foreground"
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
+          {t("subtitle")}
+        </p>
       </div>
 
-      <div className="mx-auto mt-10 max-w-3xl">
+      <div className="animate-rise mx-auto mt-10 max-w-3xl" style={{ "--i": 2 } as React.CSSProperties}>
         {/* Visitors can paste a link right away; it's kept through sign-up */}
         <ShortenForm baseUrl={baseUrl} guest={!user} />
         {!user && (
@@ -41,11 +46,15 @@ export default async function HomePage() {
       </div>
 
       <ul className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {FEATURES.map((f) => {
+        {FEATURES.map((f, i) => {
           const Icon = ICONS[f];
           return (
-            <li key={f} className="rounded-2xl border border-border bg-card/80 p-5 backdrop-blur-sm">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light">
+            <li
+              key={f}
+              className="group animate-rise rounded-2xl border border-border bg-card/80 p-5 backdrop-blur-sm transition-[box-shadow,border-color] duration-200 hover:border-primary/40 hover:shadow-md"
+              style={{ "--i": i + 3 } as React.CSSProperties}
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 text-primary dark:bg-primary-light/15 dark:text-primary-light">
                 <Icon size={22} aria-hidden />
               </span>
               <h2 className="mt-3 font-bold">{t(`features.${f}.title`)}</h2>

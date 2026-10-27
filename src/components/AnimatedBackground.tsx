@@ -6,18 +6,17 @@ import { useTranslations } from "next-intl";
 import { Pause, Play } from "lucide-react";
 
 /**
- * Decorative "network of links" behind the marketing and sign-in pages:
- * dots drift and link up when close, lean toward the pointer, and a tap on
- * empty space sends a ripple. Data pages (dashboard, stats, admin) stay calm.
+ * Decorative "network of links" behind every page: dots drift and link up
+ * when close, lean toward the pointer, and a tap on empty space sends a ripple.
+ * Data pages (dashboard, stats, admin) get a calmer version: fewer, fainter dots.
  *
  * Motion rules: a visible pause control (WCAG 2.2.2), a still frame for
  * prefers-reduced-motion, no work while the tab is hidden, and cleanup on unmount.
  */
-const PAGES = new Set(["/", "/login", "/register", "/link-unavailable"]);
-
 export default function AnimatedBackground() {
   const pathname = usePathname();
-  return PAGES.has(pathname) ? <LinkField /> : null;
+  const calm = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+  return <LinkField calm={calm} />;
 }
 
 const STORAGE_KEY = "bg-motion";
@@ -63,7 +62,7 @@ function rgb(hex: string) {
   return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
 }
 
-function LinkField() {
+function LinkField({ calm }: { calm: boolean }) {
   const t = useTranslations("background");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useSyncExternalStore(subscribeReducedMotion, prefersReducedMotion, () => false);
@@ -90,7 +89,7 @@ function LinkField() {
       colors = {
         line: rgb(css.getPropertyValue("--primary-light") || "#12775b"),
         gold: rgb(css.getPropertyValue("--gold") || "#c19a3d"),
-        lineAlpha: dark ? 0.4 : 0.3,
+        lineAlpha: (dark ? 0.4 : 0.3) * (calm ? 0.75 : 1),
       };
     };
 
@@ -114,7 +113,8 @@ function LinkField() {
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const target = Math.max(34, Math.min(80, Math.round((width * height) / 13000)));
+      const dense = Math.max(34, Math.min(80, Math.round((width * height) / 13000)));
+      const target = calm ? Math.round(dense * 0.75) : dense;
       while (nodes.length < target) nodes.push(makeNode());
       nodes = nodes.slice(0, target);
       for (const n of nodes) {
@@ -190,7 +190,7 @@ function LinkField() {
         for (const n of nodes) {
           const d = Math.hypot(pointer.x - n.x, pointer.y - n.y);
           if (d < POINTER_RADIUS) {
-            ctx.strokeStyle = `rgba(${colors.gold}, ${(1 - d / POINTER_RADIUS) * 0.55})`;
+            ctx.strokeStyle = `rgba(${colors.gold}, ${(1 - d / POINTER_RADIUS) * (calm ? 0.35 : 0.55)})`;
             ctx.beginPath();
             ctx.moveTo(pointer.x, pointer.y);
             ctx.lineTo(n.x, n.y);
@@ -290,7 +290,7 @@ function LinkField() {
       window.removeEventListener("blur", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [still]);
+  }, [still, calm]);
 
   function toggle() {
     try {

@@ -62,7 +62,7 @@ const variants = {
 const sizes = { sm: "min-h-11 px-3 text-sm sm:min-h-9", md: "min-h-11 px-5" };
 
 export function buttonClass(variant: keyof typeof variants = "primary", size: "sm" | "md" = "md") {
-  return `inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg font-bold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 ${sizes[size]} ${variants[variant]}`;
+  return `inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg font-bold transition-[color,background-color,border-color,transform] duration-150 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 ${sizes[size]} ${variants[variant]}`;
 }
 
 export function Button({
@@ -98,7 +98,7 @@ export function Button({
 
 export function Card({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={`rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6 ${className}`}>
+    <div className={`rounded-2xl border border-border bg-card/95 p-5 shadow-sm backdrop-blur-sm sm:p-6 ${className}`}>
       {children}
     </div>
   );

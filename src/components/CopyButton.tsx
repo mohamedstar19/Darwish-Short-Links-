@@ -23,7 +23,7 @@ export default function CopyButton({ text, variant = "outline" }: { text: string
         }
       }}
     >
-      {copied ? <Check size={16} aria-hidden /> : <Copy size={16} aria-hidden />}
+      {copied ? <Check size={16} className="animate-pop" aria-hidden /> : <Copy size={16} aria-hidden />}
       <span aria-live="polite">{copied ? t("copied") : t("copy")}</span>
     </Button>
   );

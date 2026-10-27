@@ -200,7 +200,7 @@ export default function ShortenForm({
       </Card>
 
       {created && (
-        <Card className="border-gold/60">
+        <Card className="animate-pop border-gold/60">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
             <div className="min-w-0 flex-1 text-center sm:text-start" role="status">
               <p className="text-sm text-muted-foreground">{t("ready")}</p>

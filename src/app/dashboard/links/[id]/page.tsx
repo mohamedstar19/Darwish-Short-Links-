@@ -12,6 +12,7 @@ import QrCode from "@/components/QrCode";
 import DailyChart from "@/components/DailyChart";
 import Breakdown from "@/components/Breakdown";
 import { STATE_STYLES } from "@/lib/link-ui";
+import CountUp from "@/components/CountUp";
 
 export async function generateMetadata() {
   const t = await getTranslations("stats");
@@ -57,7 +58,7 @@ export default async function LinkStatsPage({ params }: { params: Promise<{ id: 
         {t("back")}
       </Link>
 
-      <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 sm:flex-row sm:items-start">
+      <div className="animate-rise flex flex-col gap-5 rounded-2xl border border-border bg-card/95 p-5 sm:flex-row sm:items-start">
         <div className="min-w-0 flex-1">
           <h1 className="mb-1 text-xl font-extrabold [overflow-wrap:anywhere]">
             {link.title ?? <span dir="ltr">/{link.code}</span>}
@@ -92,29 +93,36 @@ export default async function LinkStatsPage({ params }: { params: Promise<{ id: 
         <QrCode url={short} name={link.code} />
       </div>
 
-      <dl className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-card p-4">
+      <dl className="animate-rise grid gap-3 sm:grid-cols-3" style={{ "--i": 1 } as React.CSSProperties}>
+        <div className="rounded-2xl border border-border bg-card/95 p-4">
           <dt className="text-sm text-muted-foreground">{t("allTime")}</dt>
-          <dd className="mt-1 text-3xl font-extrabold tabular-nums">{num(link.clickCount)}</dd>
+          <dd className="mt-1 text-3xl font-extrabold">
+            <CountUp value={link.clickCount} locale={tag} />
+          </dd>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card/95 p-4">
           <dt className="text-sm text-muted-foreground">{t("lastNDays", { n: num(stats.days) })}</dt>
-          <dd className="mt-1 text-3xl font-extrabold tabular-nums">{num(stats.total)}</dd>
+          <dd className="mt-1 text-3xl font-extrabold">
+            <CountUp value={stats.total} locale={tag} />
+          </dd>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card/95 p-4">
           <dt className="text-sm text-muted-foreground">{t("lastClick")}</dt>
           <dd className="mt-2 font-bold">{link.lastClickedAt ? date(link.lastClickedAt) : "—"}</dd>
         </div>
       </dl>
 
-      <section className="rounded-2xl border border-border bg-card p-5">
+      <section
+        className="animate-rise rounded-2xl border border-border bg-card/95 p-5"
+        style={{ "--i": 2 } as React.CSSProperties}
+      >
         <h2 className="mb-3 font-bold">{t("daily", { n: num(stats.days) })}</h2>
         <DailyChart daily={stats.daily} />
       </section>
 
       {/* Breakdowns only mean something once there are clicks */}
       {stats.total > 0 && (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="animate-rise grid gap-4 md:grid-cols-2" style={{ "--i": 3 } as React.CSSProperties}>
           <Breakdown
             title={t("referrers")}
             total={stats.total}

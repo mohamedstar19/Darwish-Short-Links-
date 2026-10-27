@@ -22,7 +22,7 @@ export default async function LinkUnavailablePage({
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center px-4 py-20 text-center">
       <span
-        className={`grid h-16 w-16 place-items-center rounded-2xl ${
+        className={`animate-pop grid h-16 w-16 place-items-center rounded-2xl ${
           key === "blocked" ? "bg-danger/10 text-danger" : "bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light"
         }`}
       >

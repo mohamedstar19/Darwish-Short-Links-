@@ -25,10 +25,10 @@ export default async function Header() {
         <Link
           href="/"
           aria-label={ts("name")}
-          className="me-auto flex min-h-11 items-center gap-2 font-extrabold text-primary dark:text-primary-light"
+          className="group me-auto flex min-h-11 items-center gap-2 font-extrabold text-primary dark:text-primary-light"
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG logo */}
-          <img src="/brand/logo.svg" alt="" width={36} height={36} className="h-9 w-9 rounded-[10px]" />
+          <img src="/brand/logo.svg" alt="" width={36} height={36} className="h-9 w-9 rounded-[10px] transition-transform duration-300 group-hover:-rotate-12" />
           <span className="hidden sm:inline">{ts("name")}</span>
         </Link>
         {nav.length > 0 && <NavLinks items={nav} />}

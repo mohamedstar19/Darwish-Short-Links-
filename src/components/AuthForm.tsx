@@ -56,7 +56,7 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
   const other = mode === "login" ? "register" : "login";
   return (
     <div className="mx-auto max-w-md px-4 py-12">
-      <Card>
+      <Card className="animate-rise">
         <h1 className="mb-1 text-2xl font-extrabold">{t(`${mode}.title`)}</h1>
         <p className="mb-6 text-sm text-muted-foreground">{t(`${mode}.subtitle`)}</p>
         <form onSubmit={submit} className="flex flex-col gap-4">

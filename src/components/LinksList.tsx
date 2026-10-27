@@ -4,7 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { ChartColumn, Infinity as InfinityIcon, Pause, Pencil, Play, QrCode as QrIcon, Trash2 } from "lucide-react";
+import {
+  ChartColumn,
+  Link2,
+  Infinity as InfinityIcon,
+  Pause,
+  Pencil,
+  Play,
+  QrCode as QrIcon,
+  Trash2,
+} from "lucide-react";
 import { Alert, Button, Input, buttonClass, fieldClass } from "@/components/ui";
 import type { LinkState } from "@/lib/links";
 import { STATE_STYLES } from "@/lib/link-ui";
@@ -61,15 +70,21 @@ export default function LinksList({ items, baseUrl }: { items: LinkRow[]; baseUr
         )}
       </div>
       {items.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-input p-8 text-center text-muted-foreground">
+        <div
+          className="animate-rise flex flex-col items-center gap-3 rounded-xl border border-dashed border-input bg-card/60 p-8 text-center text-muted-foreground"
+          style={{ "--i": 2 } as React.CSSProperties}
+        >
+          <span className="grid h-12 w-12 animate-[pop_500ms_ease-out_600ms_both] place-items-center rounded-2xl bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light">
+            <Link2 size={24} aria-hidden />
+          </span>
           {t("empty")}
-        </p>
+        </div>
       ) : visible.length === 0 ? (
         <p className="text-muted-foreground">{t("noMatch")}</p>
       ) : (
         <ul className="flex flex-col gap-3">
-          {visible.map((l) => (
-            <LinkItem key={l.id} link={l} short={`${baseUrl}/${l.code}`} />
+          {visible.map((l, i) => (
+            <LinkItem key={l.id} index={i} link={l} short={`${baseUrl}/${l.code}`} />
           ))}
         </ul>
       )}
@@ -77,7 +92,7 @@ export default function LinksList({ items, baseUrl }: { items: LinkRow[]; baseUr
   );
 }
 
-function LinkItem({ link, short }: { link: LinkRow; short: string }) {
+function LinkItem({ link, short, index }: { link: LinkRow; short: string; index: number }) {
   const t = useTranslations("links");
   const te = useTranslations("errors");
   const router = useRouter();
@@ -132,7 +147,11 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
   const toggle = (p: typeof panel) => setPanel(panel === p ? "none" : p);
 
   return (
-    <li className="rounded-xl border border-border bg-card p-4" aria-label={link.title ?? link.code}>
+    <li
+      className="animate-rise rounded-xl border border-border bg-card/95 p-4 transition-[box-shadow,border-color] duration-200 hover:border-primary/40 hover:shadow-md"
+      style={{ "--i": index + 2 } as React.CSSProperties}
+      aria-label={link.title ?? link.code}
+    >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
           {link.title && <p className="mb-0.5 truncate font-bold">{link.title}</p>}
@@ -146,7 +165,8 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
             {short.replace(/^https?:\/\//, "")}
           </a>
           <p dir="ltr" className="truncate text-start text-sm text-muted-foreground" title={link.url}>
-            <span aria-hidden>→ </span>{link.url}
+            <span aria-hidden>→ </span>
+            {link.url}
           </p>
           <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className={`rounded-full px-2 py-0.5 font-bold ${STATE_STYLES[link.state]}`}>
@@ -178,11 +198,21 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
         </Link>
         {link.state !== "blocked" && (
           <>
-            <Button size="sm" variant="outline" onClick={() => toggle("edit")} aria-expanded={panel === "edit"}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => toggle("edit")}
+              aria-expanded={panel === "edit"}
+            >
               <Pencil size={16} aria-hidden />
               {t("edit")}
             </Button>
-            <Button size="sm" variant="outline" disabled={busy} onClick={() => patch({ isActive: link.state === "paused" })}>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={busy}
+              onClick={() => patch({ isActive: link.state === "paused" })}
+            >
               {link.state === "paused" ? <Play size={16} aria-hidden /> : <Pause size={16} aria-hidden />}
               {link.state === "paused" ? t("resume") : t("pause")}
             </Button>
@@ -209,7 +239,15 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
       {panel === "edit" && (
         <form onSubmit={saveEdit} className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Input name="url" type="url" dir="ltr" required maxLength={2048} label={t("destination")} defaultValue={link.url} />
+            <Input
+              name="url"
+              type="url"
+              dir="ltr"
+              required
+              maxLength={2048}
+              label={t("destination")}
+              defaultValue={link.url}
+            />
           </div>
           <Input name="title" label={t("title")} maxLength={120} defaultValue={link.title ?? ""} />
           <Input

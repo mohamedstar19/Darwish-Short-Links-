@@ -9,6 +9,7 @@ import { STATE_STYLES } from "@/lib/link-ui";
 import { requestBaseUrl } from "@/lib/request-origin";
 import { BlockLinkButton, BlockUserButton } from "@/components/AdminActions";
 import { fieldClass } from "@/components/ui";
+import CountUp from "@/components/CountUp";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +48,14 @@ export default async function AdminPage({
     tab === "links"
       ? await prisma.link.findMany({
           where: q
-            ? { OR: [{ code: contains }, { url: contains }, { title: contains }, { user: { email: contains } }] }
+            ? {
+                OR: [
+                  { code: contains },
+                  { url: contains },
+                  { title: contains },
+                  { user: { email: contains } },
+                ],
+              }
             : {},
           orderBy: { createdAt: "desc" },
           take: 100,
@@ -77,18 +85,28 @@ export default async function AdminPage({
           [t("links"), linkCount],
           [t("clicks24h"), clicks24h],
         ].map(([label, value]) => (
-          <div key={String(label)} className="rounded-2xl border border-border bg-card p-4">
+          <div key={String(label)} className="animate-rise rounded-2xl border border-border bg-card/95 p-4">
             <dt className="text-xs text-muted-foreground sm:text-sm">{label}</dt>
-            <dd className="mt-1 text-2xl font-extrabold tabular-nums">{num(Number(value))}</dd>
+            <dd className="mt-1 text-2xl font-extrabold">
+              <CountUp value={Number(value)} locale={tag} />
+            </dd>
           </div>
         ))}
       </dl>
 
       <div className="flex flex-wrap items-center gap-2">
-        <Link href="/admin?tab=links" aria-current={tab === "links" ? "page" : undefined} className={tabClass(tab === "links")}>
+        <Link
+          href="/admin?tab=links"
+          aria-current={tab === "links" ? "page" : undefined}
+          className={tabClass(tab === "links")}
+        >
           {t("links")}
         </Link>
-        <Link href="/admin?tab=users" aria-current={tab === "users" ? "page" : undefined} className={tabClass(tab === "users")}>
+        <Link
+          href="/admin?tab=users"
+          aria-current={tab === "users" ? "page" : undefined}
+          className={tabClass(tab === "users")}
+        >
           {t("users")}
         </Link>
         <form className="ms-auto flex w-full gap-2 sm:w-auto">
@@ -107,10 +125,14 @@ export default async function AdminPage({
       {tab === "links" && (
         <ul className="flex flex-col gap-3">
           {links.length === 0 && <p className="text-muted-foreground">{t("nothing")}</p>}
-          {links.map((l) => {
+          {links.map((l, i) => {
             const state = linkState(l);
             return (
-              <li key={l.id} className="flex flex-wrap items-start gap-3 rounded-xl border border-border bg-card p-4">
+              <li
+                key={l.id}
+                className="animate-rise flex flex-wrap items-start gap-3 rounded-xl border border-border bg-card/95 p-4"
+                style={{ "--i": i + 1 } as React.CSSProperties}
+              >
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/dashboard/links/${l.id}`}
@@ -120,10 +142,13 @@ export default async function AdminPage({
                     {`${baseUrl}/${l.code}`.replace(/^https?:\/\//, "")}
                   </Link>
                   <p dir="ltr" className="truncate text-start text-sm text-muted-foreground" title={l.url}>
-                    <span aria-hidden>→ </span>{l.url}
+                    <span aria-hidden>→ </span>
+                    {l.url}
                   </p>
                   <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                    <span className={`rounded-full px-2 py-0.5 font-bold ${STATE_STYLES[state]}`}>{tl(`state.${state}`)}</span>
+                    <span className={`rounded-full px-2 py-0.5 font-bold ${STATE_STYLES[state]}`}>
+                      {tl(`state.${state}`)}
+                    </span>
                     <span dir="ltr">{l.user.email}</span>
                     <span>{date(l.createdAt)}</span>
                     <span>{tl("clicksN", { n: num(l.clickCount) })}</span>
@@ -139,8 +164,12 @@ export default async function AdminPage({
       {tab === "users" && (
         <ul className="flex flex-col gap-3">
           {users.length === 0 && <p className="text-muted-foreground">{t("nothing")}</p>}
-          {users.map((u) => (
-            <li key={u.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-4">
+          {users.map((u, i) => (
+            <li
+              key={u.id}
+              className="animate-rise flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/95 p-4"
+              style={{ "--i": i + 1 } as React.CSSProperties}
+            >
               <div className="min-w-0 flex-1">
                 <p className="font-bold">
                   {u.name}{" "}
@@ -148,7 +177,9 @@ export default async function AdminPage({
                     <span className="rounded-full bg-gold/20 px-2 py-0.5 text-xs">{t("adminBadge")}</span>
                   )}
                   {u.isBlocked && (
-                    <span className="rounded-full bg-danger/10 px-2 py-0.5 text-xs text-danger">{t("blockedBadge")}</span>
+                    <span className="rounded-full bg-danger/10 px-2 py-0.5 text-xs text-danger">
+                      {t("blockedBadge")}
+                    </span>
                   )}
                 </p>
                 <p dir="ltr" className="truncate text-start text-sm text-muted-foreground">
