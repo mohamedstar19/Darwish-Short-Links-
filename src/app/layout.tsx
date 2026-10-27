@@ -28,8 +28,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className={`${cairo.variable} flex min-h-dvh flex-col antialiased`}>
         <NextIntlClientProvider>
+          <a
+            href="#main"
+            className="sr-only z-50 rounded-lg bg-primary px-4 py-2 font-bold text-primary-foreground focus:not-sr-only focus:fixed focus:start-4 focus:top-2"
+          >
+            {t("skipToContent")}
+          </a>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main" tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
           <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
             {t("footer")}
           </footer>

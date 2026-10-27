@@ -12,9 +12,16 @@ export async function generateMetadata() {
   return { title: t("dashboard") };
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ url?: string }>;
+}) {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/dashboard");
+  // A link pasted on the home page before signing up
+  const { url: pending } = await searchParams;
+  const initialUrl = typeof pending === "string" ? pending.slice(0, 2048) : "";
   const t = await getTranslations("dashboard");
 
   const [links, baseUrl] = await Promise.all([
@@ -46,7 +53,7 @@ export default async function DashboardPage() {
           </div>
         </dl>
       </div>
-      <ShortenForm baseUrl={baseUrl} />
+      <ShortenForm baseUrl={baseUrl} initialUrl={initialUrl} />
       <LinksList items={links.map(toLinkRow)} baseUrl={baseUrl} />
     </div>
   );

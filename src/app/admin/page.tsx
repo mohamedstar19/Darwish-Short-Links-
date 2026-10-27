@@ -8,6 +8,7 @@ import { platformTotals } from "@/lib/link-service";
 import { STATE_STYLES } from "@/lib/link-ui";
 import { requestBaseUrl } from "@/lib/request-origin";
 import { BlockLinkButton, BlockUserButton } from "@/components/AdminActions";
+import { fieldClass } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -64,7 +65,7 @@ export default async function AdminPage({
       : [];
 
   const tabClass = (active: boolean) =>
-    `rounded-lg px-4 py-2 text-sm font-bold ${active ? "bg-primary text-primary-foreground" : "border border-border hover:bg-muted"}`;
+    `inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-bold sm:min-h-9 ${active ? "bg-primary text-primary-foreground" : "border border-input hover:bg-muted"}`;
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8">
@@ -84,10 +85,10 @@ export default async function AdminPage({
       </dl>
 
       <div className="flex flex-wrap items-center gap-2">
-        <Link href="/admin?tab=links" className={tabClass(tab === "links")}>
+        <Link href="/admin?tab=links" aria-current={tab === "links" ? "page" : undefined} className={tabClass(tab === "links")}>
           {t("links")}
         </Link>
-        <Link href="/admin?tab=users" className={tabClass(tab === "users")}>
+        <Link href="/admin?tab=users" aria-current={tab === "users" ? "page" : undefined} className={tabClass(tab === "users")}>
           {t("users")}
         </Link>
         <form className="ms-auto flex w-full gap-2 sm:w-auto">
@@ -98,7 +99,7 @@ export default async function AdminPage({
             defaultValue={q}
             placeholder={t(tab === "links" ? "searchLinks" : "searchUsers")}
             aria-label={t(tab === "links" ? "searchLinks" : "searchUsers")}
-            className="min-w-0 flex-1 rounded-lg border border-border bg-card px-3.5 py-2 text-sm outline-none focus:border-primary sm:w-72"
+            className={`${fieldClass} min-w-0 flex-1 text-sm sm:w-72`}
           />
         </form>
       </div>
@@ -119,7 +120,7 @@ export default async function AdminPage({
                     {`${baseUrl}/${l.code}`.replace(/^https?:\/\//, "")}
                   </Link>
                   <p dir="ltr" className="truncate text-start text-sm text-muted-foreground" title={l.url}>
-                    → {l.url}
+                    <span aria-hidden>→ </span>{l.url}
                   </p>
                   <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                     <span className={`rounded-full px-2 py-0.5 font-bold ${STATE_STYLES[state]}`}>{tl(`state.${state}`)}</span>

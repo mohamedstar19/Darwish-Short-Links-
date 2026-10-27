@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Alert, Button, Input } from "@/components/ui";
+import { ChartColumn, Infinity as InfinityIcon, Pause, Pencil, Play, QrCode as QrIcon, Trash2 } from "lucide-react";
+import { Alert, Button, Input, buttonClass, fieldClass } from "@/components/ui";
 import type { LinkState } from "@/lib/links";
 import { STATE_STYLES } from "@/lib/link-ui";
 import CopyButton from "./CopyButton";
@@ -55,12 +56,12 @@ export default function LinksList({ items, baseUrl }: { items: LinkRow[]; baseUr
             onChange={(e) => setFilter(e.target.value)}
             placeholder={t("search")}
             aria-label={t("search")}
-            className="w-full rounded-lg border border-border bg-card px-3.5 py-2 text-sm outline-none focus:border-primary sm:w-64"
+            className={`${fieldClass} text-sm sm:w-64`}
           />
         )}
       </div>
       {items.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-muted-foreground">
+        <p className="rounded-xl border border-dashed border-input p-8 text-center text-muted-foreground">
           {t("empty")}
         </p>
       ) : visible.length === 0 ? (
@@ -131,7 +132,7 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
   const toggle = (p: typeof panel) => setPanel(panel === p ? "none" : p);
 
   return (
-    <li className="rounded-xl border border-border bg-card p-4">
+    <li className="rounded-xl border border-border bg-card p-4" aria-label={link.title ?? link.code}>
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
           {link.title && <p className="mb-0.5 truncate font-bold">{link.title}</p>}
@@ -145,7 +146,7 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
             {short.replace(/^https?:\/\//, "")}
           </a>
           <p dir="ltr" className="truncate text-start text-sm text-muted-foreground" title={link.url}>
-            → {link.url}
+            <span aria-hidden>→ </span>{link.url}
           </p>
           <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className={`rounded-full px-2 py-0.5 font-bold ${STATE_STYLES[link.state]}`}>
@@ -157,36 +158,38 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
         </div>
         <Link
           href={`/dashboard/links/${link.id}`}
-          className="shrink-0 rounded-lg px-2 py-1 text-center hover:bg-muted"
-          aria-label={t("viewStats")}
+          className="min-w-14 shrink-0 rounded-lg px-2 py-1 text-center hover:bg-muted"
         >
           <span className="block text-2xl font-extrabold tabular-nums">{num(link.clickCount)}</span>
           <span className="block text-xs text-muted-foreground">{t("clicks")}</span>
+          <span className="sr-only">{t("viewStats")}</span>
         </Link>
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
         <CopyButton text={short} />
         <Button size="sm" variant="outline" onClick={() => toggle("qr")} aria-expanded={panel === "qr"}>
-          ▦ QR
+          <QrIcon size={16} aria-hidden />
+          QR
         </Button>
-        <Link
-          href={`/dashboard/links/${link.id}`}
-          className="inline-flex items-center rounded-lg border border-border px-3 py-1.5 text-sm font-bold hover:bg-muted"
-        >
-          📈 {t("stats")}
+        <Link href={`/dashboard/links/${link.id}`} className={buttonClass("outline", "sm")}>
+          <ChartColumn size={16} aria-hidden />
+          {t("stats")}
         </Link>
         {link.state !== "blocked" && (
           <>
             <Button size="sm" variant="outline" onClick={() => toggle("edit")} aria-expanded={panel === "edit"}>
-              ✎ {t("edit")}
+              <Pencil size={16} aria-hidden />
+              {t("edit")}
             </Button>
             <Button size="sm" variant="outline" disabled={busy} onClick={() => patch({ isActive: link.state === "paused" })}>
-              {link.state === "paused" ? `▶ ${t("resume")}` : `⏸ ${t("pause")}`}
+              {link.state === "paused" ? <Play size={16} aria-hidden /> : <Pause size={16} aria-hidden />}
+              {link.state === "paused" ? t("resume") : t("pause")}
             </Button>
           </>
         )}
-        <Button size="sm" variant="ghost" className="text-danger" disabled={busy} onClick={remove}>
+        <Button size="sm" variant="ghost" className="ms-auto text-danger" disabled={busy} onClick={remove}>
+          <Trash2 size={16} aria-hidden />
           {t("delete")}
         </Button>
       </div>
@@ -204,9 +207,9 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
       )}
 
       {panel === "edit" && (
-        <form onSubmit={saveEdit} className="mt-4 grid gap-3 sm:grid-cols-2">
+        <form onSubmit={saveEdit} className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Input name="url" type="url" dir="ltr" required maxLength={2048} label={t("url")} defaultValue={link.url} />
+            <Input name="url" type="url" dir="ltr" required maxLength={2048} label={t("destination")} defaultValue={link.url} />
           </div>
           <Input name="title" label={t("title")} maxLength={120} defaultValue={link.title ?? ""} />
           <Input
@@ -228,7 +231,8 @@ function LinkItem({ link, short }: { link: LinkRow; short: string }) {
                 disabled={busy}
                 onClick={async () => (await patch({ expiresAt: null })) && setPanel("none")}
               >
-                ∞ {t("removeExpiry")}
+                <InfinityIcon size={16} aria-hidden />
+                {t("removeExpiry")}
               </Button>
             )}
             <Button type="button" size="sm" variant="ghost" onClick={() => setPanel("none")}>

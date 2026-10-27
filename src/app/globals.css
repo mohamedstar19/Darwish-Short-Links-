@@ -9,14 +9,15 @@
   --card: #ffffff;
   --card-foreground: #1b2a26;
   --muted: #eee9dd;
-  --muted-foreground: #5f6f69;
+  --muted-foreground: #56655f; /* 5:1 on --muted */
   --primary: #0b5d46;
   --primary-light: #12775b;
   --primary-dark: #073d2e;
   --primary-foreground: #f6f3ea;
   --gold: #c19a3d;
   --gold-light: #d9bc6e;
-  --border: #ddd5c3;
+  --border: #ddd5c3; /* decorative card/divider lines */
+  --input: #8c8573; /* form-field outlines: ≥3:1 on card and background */
   --danger: #b3362f;
   --success: #1d7a4f;
 }
@@ -29,13 +30,14 @@
   --card-foreground: #cfe8e1;
   --muted: #182e2a;
   --muted-foreground: #9db3ad;
-  --primary: #1a9c76;
+  --primary: #12775b; /* ≥4.5:1 with --primary-foreground */
   --primary-light: #53ddad;
   --primary-dark: #062b22;
   --primary-foreground: #f6f3ea;
   --gold: #f2ca50;
   --gold-light: #ffe088;
   --border: #233934;
+  --input: #5b766f;
   --danger: #ffb4ab;
   --success: #53ddad;
 }
@@ -54,6 +56,7 @@
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-border: var(--border);
+  --color-input: var(--input);
   --color-danger: var(--danger);
   --color-success: var(--success);
   --font-sans: var(--font-cairo), system-ui, sans-serif;
@@ -73,4 +76,25 @@ body {
 :focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
+}
+
+button,
+a,
+summary,
+label[for] {
+  touch-action: manipulation;
+}
+
+/* Respect "reduce motion": no spinners spinning, pulses, or smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -3,14 +3,15 @@
     "name": "Darwish Links",
     "description": "Shorten long links, get a QR code, and see who clicks.",
     "footer": "Darwish Links — simple, safe link shortening",
-    "numberLocale": "en"
+    "numberLocale": "en",
+    "skipToContent": "Skip to content"
   },
   "nav": {
     "dashboard": "My links",
     "admin": "Admin",
     "login": "Log in",
     "logout": "Log out",
-    "theme": "Toggle dark mode"
+    "darkMode": "Dark mode"
   },
   "auth": {
     "name": "Name",
@@ -28,7 +29,9 @@
       "subtitle": "Sign up for free and start shortening in seconds.",
       "submit": "Create account",
       "switchPrompt": "Already have an account?"
-    }
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "errors": {
     "INVALID_INPUT": "Please check your input: the URL must start with http or https, and a custom code must be 3–50 letters, digits or hyphens.",
@@ -47,8 +50,7 @@
   "home": {
     "title": "Short, clean links that tell you who clicked",
     "subtitle": "Paste any long URL, get a short link to share on WhatsApp or print as a QR code, and track clicks day by day.",
-    "ctaRegister": "Start for free",
-    "ctaLogin": "I have an account",
+    "ctaLogin": "Log in",
     "features": {
       "short": {
         "title": "Short or custom",
@@ -66,7 +68,8 @@
         "title": "Full control",
         "body": "Change the destination, pause the link, or set an expiry date."
       }
-    }
+    },
+    "haveAccount": "Have an account?"
   },
   "dashboard": {
     "greeting": "Welcome, {name}",
@@ -79,8 +82,7 @@
     "copied": "Copied",
     "qrAlt": "QR code for {url}",
     "downloadQr": "Download QR",
-    "url": "Destination URL",
-    "urlPlaceholder": "Paste a long link here…",
+    "url": "Long URL",
     "shorten": "Shorten",
     "moreOptions": "More options",
     "customCode": "Custom code",
@@ -113,11 +115,13 @@
       "expired": "Expired",
       "blocked": "Blocked"
     },
-    "linksN": "{n} links"
+    "linksN": "{n} links",
+    "guestHint": "You'll create a free account in seconds; your link will be waiting.",
+    "destination": "Destination URL"
   },
   "stats": {
     "title": "Link stats",
-    "back": "← Back to my links",
+    "back": "Back to my links",
     "max": "Busiest day: {n}",
     "clicksN": "{n} clicks",
     "asTable": "Show as table",
@@ -142,7 +146,8 @@
     },
     "privacyNote": "IP addresses aren't stored. WhatsApp, Facebook and Telegram previews and crawlers aren't counted as clicks.",
     "blockedReason": "Blocked by an admin: {reason}",
-    "userBlocked": "Blocked because the account is suspended."
+    "userBlocked": "Blocked because the account is suspended.",
+    "noClicksYet": "No clicks in the last 30 days. Share the link and they'll show up here."
   },
   "unavailable": {
     "title": "Link unavailable",

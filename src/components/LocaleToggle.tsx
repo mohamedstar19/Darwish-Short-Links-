@@ -4,6 +4,8 @@ import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
+const NAMES = { ar: "العربية", en: "English" } as const;
+
 export default function LocaleToggle() {
   const locale = useLocale();
   const router = useRouter();
@@ -14,6 +16,8 @@ export default function LocaleToggle() {
     <button
       type="button"
       disabled={pending}
+      aria-label={NAMES[next]}
+      lang={next}
       onClick={() =>
         start(async () => {
           await fetch("/api/locale", {
@@ -24,8 +28,7 @@ export default function LocaleToggle() {
           router.refresh();
         })
       }
-      className="rounded-lg border border-border px-3 py-1.5 text-sm font-bold hover:bg-muted disabled:opacity-50"
-      lang={next}
+      className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border border-input px-2.5 text-sm font-bold hover:bg-muted disabled:opacity-50 sm:min-h-9"
     >
       {next === "ar" ? "عربي" : "EN"}
     </button>

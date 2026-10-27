@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui";
 
-export default function CopyButton({ text, variant = "gold" }: { text: string; variant?: "gold" | "outline" }) {
+export default function CopyButton({ text, variant = "outline" }: { text: string; variant?: "gold" | "outline" }) {
   const t = useTranslations("links");
   const [copied, setCopied] = useState(false);
   return (
@@ -22,7 +23,8 @@ export default function CopyButton({ text, variant = "gold" }: { text: string; v
         }
       }}
     >
-      <span aria-live="polite">{copied ? `✓ ${t("copied")}` : `📋 ${t("copy")}`}</span>
+      {copied ? <Check size={16} aria-hidden /> : <Copy size={16} aria-hidden />}
+      <span aria-live="polite">{copied ? t("copied") : t("copy")}</span>
     </Button>
   );
 }

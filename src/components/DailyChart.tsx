@@ -19,6 +19,15 @@ export default function DailyChart({ daily }: { daily: { day: string; count: num
     return `${Number(d)}/${Number(m)}`;
   };
   const shown = active === null ? null : daily[active];
+  const total = daily.reduce((sum, d) => sum + d.count, 0);
+
+  if (total === 0) {
+    return (
+      <p className="rounded-xl border border-dashed border-input p-6 text-center text-sm text-muted-foreground">
+        {t("noClicksYet")}
+      </p>
+    );
+  }
 
   return (
     <figure>

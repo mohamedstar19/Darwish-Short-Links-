@@ -1,26 +1,39 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
+import { Moon, Sun } from "lucide-react";
+
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+const isDark = () => document.documentElement.classList.contains("dark");
 
 export default function ThemeToggle() {
   const t = useTranslations("nav");
+  const dark = useSyncExternalStore(subscribe, isDark, () => false);
+
   function toggle() {
-    const dark = document.documentElement.classList.toggle("dark");
+    const next = !isDark();
+    document.documentElement.classList.toggle("dark", next);
     try {
-      localStorage.setItem("theme", dark ? "dark" : "light");
+      localStorage.setItem("theme", next ? "dark" : "light");
     } catch {
       /* private mode: the toggle still works for this page */
     }
   }
+
   return (
     <button
       type="button"
       onClick={toggle}
-      aria-label={t("theme")}
-      className="grid h-9 w-9 place-items-center rounded-lg hover:bg-muted"
+      aria-label={t("darkMode")}
+      aria-pressed={dark}
+      className="grid h-11 w-11 cursor-pointer place-items-center rounded-lg hover:bg-muted sm:h-9 sm:w-9"
     >
-      <span className="dark:hidden" aria-hidden>🌙</span>
-      <span className="hidden dark:inline" aria-hidden>☀️</span>
+      {dark ? <Sun size={20} aria-hidden /> : <Moon size={20} aria-hidden />}
     </button>
   );
 }

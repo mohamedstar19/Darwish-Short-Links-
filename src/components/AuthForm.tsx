@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Alert, Button, Card, Input } from "@/components/ui";
+import PasswordInput from "./PasswordInput";
 
 const KNOWN_ERRORS = [
   "INVALID_INPUT",
@@ -59,15 +60,12 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
         <h1 className="mb-1 text-2xl font-extrabold">{t(`${mode}.title`)}</h1>
         <p className="mb-6 text-sm text-muted-foreground">{t(`${mode}.subtitle`)}</p>
         <form onSubmit={submit} className="flex flex-col gap-4">
-          {error && <Alert>{error}</Alert>}
           {mode === "register" && (
             <Input name="name" label={t("name")} required minLength={2} maxLength={80} autoComplete="name" />
           )}
           <Input name="email" type="email" dir="ltr" label={t("email")} required autoComplete="email" />
-          <Input
+          <PasswordInput
             name="password"
-            type="password"
-            dir="ltr"
             label={t("password")}
             required
             minLength={mode === "register" ? 8 : 1}
@@ -75,6 +73,7 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
             hint={mode === "register" ? t("passwordHint") : undefined}
             autoComplete={mode === "register" ? "new-password" : "current-password"}
           />
+          {error && <Alert>{error}</Alert>}
           <Button type="submit" loading={loading}>
             {t(`${mode}.submit`)}
           </Button>

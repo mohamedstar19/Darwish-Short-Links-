@@ -1,6 +1,6 @@
 # Links and redirects
 
-- UI: `ShortenForm` on `/` (signed in) and `/dashboard`; `LinksList` on `/dashboard` with copy, QR, stats, edit, pause/resume, delete.
+- UI: `ShortenForm` on `/` and `/dashboard`. Visitors who aren't signed in can paste a URL on `/`; it's carried through `/register?next=/dashboard?url=…` and waiting in the form after sign-up. `LinksList` on `/dashboard` with copy, QR, stats, edit, pause/resume, delete.
 - APIs (owner only, others get 404): `GET/POST /api/links`, `GET/PATCH/DELETE /api/links/[id]`.
 - Redirect: `src/app/[code]/route.ts`.
 

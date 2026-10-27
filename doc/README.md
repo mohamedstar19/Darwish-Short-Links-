@@ -1,6 +1,7 @@
 # Documentation
 
 - [Architecture](architecture.md): runtime, data model, request flow, security, deployment notes.
+- [Design rules](design.md): tokens, contrast, components, accessibility checks for any UI change.
 - Features:
   - [Accounts](features/accounts.md)
   - [Links and redirects](features/links.md)

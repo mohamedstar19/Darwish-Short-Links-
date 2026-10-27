@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Download } from "lucide-react";
+import { buttonClass } from "@/components/ui";
 
 /** QR code for a short link, with a PNG download */
 export default function QrCode({ url, name }: { url: string; name: string }) {
@@ -27,13 +29,14 @@ export default function QrCode({ url, name }: { url: string; name: string }) {
           <a
             href={src}
             download={`qr-${name}.png`}
-            className="rounded-lg border border-border px-3 py-1.5 text-sm font-bold hover:bg-muted"
+            className={buttonClass("outline", "sm")}
           >
-            ⬇ {t("downloadQr")}
+            <Download size={16} aria-hidden />
+            {t("downloadQr")}
           </a>
         </>
       ) : (
-        <div className="h-44 w-44 animate-pulse rounded-lg bg-muted" />
+        <div className="h-44 w-44 animate-pulse rounded-lg bg-muted" aria-hidden />
       )}
     </div>
   );

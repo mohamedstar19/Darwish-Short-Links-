@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ShieldBan, Unlink } from "lucide-react";
+import { buttonClass } from "@/components/ui";
 import { getTranslations } from "next-intl/server";
 
 const REASONS = ["missing", "paused", "expired", "blocked"] as const;
@@ -19,14 +21,18 @@ export default async function LinkUnavailablePage({
   const key = REASONS.find((r) => r === reason) ?? "missing";
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center px-4 py-20 text-center">
-      <span className="text-5xl" aria-hidden>
-        {key === "blocked" ? "⛔" : "🔗"}
+      <span
+        className={`grid h-16 w-16 place-items-center rounded-2xl ${
+          key === "blocked" ? "bg-danger/10 text-danger" : "bg-primary/10 text-primary dark:bg-primary-light/15 dark:text-primary-light"
+        }`}
+      >
+        {key === "blocked" ? <ShieldBan size={32} aria-hidden /> : <Unlink size={32} aria-hidden />}
       </span>
       <h1 className="mt-4 text-2xl font-extrabold text-primary dark:text-primary-light">{t("title")}</h1>
       <p className="mt-3 text-muted-foreground">{t(`reason.${key}`)}</p>
       <Link
         href="/"
-        className="mt-8 rounded-lg bg-primary px-5 py-2.5 font-bold text-primary-foreground hover:bg-primary-dark"
+        className={`${buttonClass()} mt-8`}
       >
         {t("home")}
       </Link>

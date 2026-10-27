@@ -4,7 +4,7 @@
 
 ## Read only what you need
 
-1. Start with `doc/README.md`, then the one feature file for your task.
+1. Start with `doc/README.md`, then the one feature file for your task. Read `doc/design.md` before any UI change.
 2. Before changing Next.js code, read the relevant guide in `node_modules/next/dist/docs/` — this is Next.js 16.2.10 and conventions differ from older versions (e.g. `params` is a Promise, `after()` for post-response work).
 3. Search with `rg` before opening files. Don't load every route or translation file.
 
